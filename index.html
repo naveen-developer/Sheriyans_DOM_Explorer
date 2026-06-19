@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Links</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: #f1f5f9;
+        }
+
+        button,
+        a {
+            font-family: inherit;
+        }
+
+        .task-section {
+            width: 100%;
+            max-width: 700px;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .task-section h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        .task-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .task-links a {
+            display: inline-block;
+            padding: 0.875rem 1.5rem;
+            background-color: #035674;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.3s ease,
+                background-color 0.3s ease;
+        }
+
+        .task-links a:hover,
+        .task-links a:focus {
+            background-color: #043547;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+            .task-links {
+                flex-direction: column;
+            }
+
+            .task-links a {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="task-section">
+        <h1>DOM Manipulation Tasks</h1>
+
+        <div class="task-links">
+            <a href="task1.html">Task 1</a>
+            <a href="task2.html">Task 2</a>
+            <a href="task3.html">Task 3</a>
+        </div>
+    </section>
+
+</body>
+
+</html>

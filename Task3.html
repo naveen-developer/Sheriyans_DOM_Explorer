@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            background-color: #f4f4f4;
+            padding: 2rem;
+        }
+
+        button,
+        a {
+            font-family: inherit;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .note {
+            background: #e3e3e3;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 5px solid #333;
+        }
+
+        .task-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .task-card p {
+            color: #666;
+        }
+
+        div[data-priority='high'] {
+            border: 2px solid #bb4040;
+            padding: 0.5rem 1rem;
+
+        }
+
+        div[data-status='completed'] {
+            border: 2px solid #459945;
+            padding: 1rem;
+        }
+
+        div[data-priority='no priority'] {
+            border: 2px solid green;
+
+        }
+
+        #taskList span {
+            font-size: 1.5rem;
+        }
+
+
+
+        #taskList .taskItem {
+            display: flex;
+            align-items: center;
+        }
+
+        .editBtn {
+            margin-left: auto;
+        }
+
+        .completeBtn,
+        .deleteBtn {
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Task Manager</h1>
+
+        <form id="taskForm">
+
+            <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" id="taskTitle" placeholder="Enter task title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                </select>
+            </div>
+
+            <button type="button">Add Task</button>
+            <small class="note">Note: Red border means high priority task</small>
+        </form>
+
+        <section id="taskList">
+            <!-- Task cards will appear here -->
+
+        </section>
+
+    </main>
+    <script>
+        const taskInput = document.querySelector('#taskTitle');
+        const category = document.querySelector('#category');
+        const addTaskBtn = document.querySelector('form button');
+        const result = document.querySelector('#taskList');
+
+
+
+
+
+        addTaskBtn.addEventListener('click', (event) => {
+            const taskDivElement = document.createElement('div');
+            taskDivElement.setAttribute('role', 'listitem');
+            taskDivElement.classList.add('taskItem');
+
+
+
+            //edit button
+            const createEditButton = document.createElement('button');
+            createEditButton.classList.add('editBtn')
+            createEditButton.textContent = 'Edit';
+
+            //complete button
+            const createCompleteButton = document.createElement('button');
+            createCompleteButton.classList.add('completeBtn')
+            createCompleteButton.textContent = 'Complete';
+
+            //delete button
+            const createDeleteButton = document.createElement('button');
+            createDeleteButton.classList.add('deleteBtn')
+            createDeleteButton.textContent = 'Delete';
+
+            taskDivElement.dataset.id = Date.now();
+            taskDivElement.dataset.status = 'pending';
+
+            if (!taskInput.value) {
+                return;
+            }
+
+            if (category.value === 'Work') {
+                taskDivElement.dataset.priority = 'high';
+            }
+
+            if (taskDivElement.hasAttribute('data-priority')) {
+                console.log("Priority Exist");
+            }
+            const taskInputSpan = document.createElement('span');
+            const formatSpan = document.createElement('span');
+            const taskCategorySpan = document.createElement('span');
+
+
+
+            taskInputSpan.textContent = taskInput.value;
+            formatSpan.textContent = ' - ';
+            taskCategorySpan.textContent = category.value;
+
+            const statusIcon = document.createElement('span');
+            statusIcon.textContent = '📌';
+
+            const message = document.createElement('p');
+            message.textContent = "Task Created Successfully!";
+
+            taskDivElement.prepend(statusIcon);
+            taskDivElement.append(taskInputSpan);
+            taskDivElement.append(formatSpan);
+            taskDivElement.append(taskCategorySpan)
+            taskDivElement.append(createEditButton);
+            taskDivElement.append(createCompleteButton);
+            taskDivElement.append(createDeleteButton);
+
+            result.append(taskDivElement);
+
+
+
+            result.before(message);
+
+            taskInput.value = "";
+
+        })
+
+        result.addEventListener('click', function (event) {
+
+            if (event.target.classList.contains('deleteBtn')) {
+
+                const task = event.target.closest('.taskItem');
+
+                console.log('Task has been deleted');
+
+                task.dataset.status = 'deleted';
+                task.removeAttribute('data-id');
+                task.style.textDecoration = 'line-through';
+
+            } else if (event.target.classList.contains('completeBtn')) {
+
+                const task = event.target.closest('.taskItem');
+
+                console.log('Task has been completed');
+
+                task.dataset.status = 'completed';
+
+            } else if (event.target.classList.contains('editBtn')) {
+
+                const task = event.target.closest('.taskItem');
+
+                console.log('Task has been edited');
+
+
+
+            }
+
+        });
+
+
+
+    </script>
+</body>
+
+</html>

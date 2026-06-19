@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 5px solid #333;
+        }
+
+        .task-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .task-card p {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Task Manager</h1>
+
+        <form id="taskForm">
+
+            <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" id="taskTitle" placeholder="Enter task title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                </select>
+            </div>
+
+            <button type="button">Add Task</button>
+
+        </form>
+
+        <section id="taskList">
+            <!-- Task cards will appear here -->
+
+        </section>
+
+    </main>
+    <script>
+        const taskTitle = document.querySelector('#taskTitle');
+        const category = document.querySelector('#category');
+        const addTaskBtn = document.querySelector('form button');
+        const taskList = document.querySelector('#taskList');
+
+        addTaskBtn.addEventListener('click', () => {
+            const taskDiv = document.createElement('div');
+
+            const taskTitleSpan = document.createElement('span');
+            const taskCategorySpan = document.createElement('span');
+
+            taskTitleSpan.textContent = taskTitle.value;
+            taskCategorySpan.textContent = category.value;
+
+            taskDiv.appendChild(taskTitleSpan)
+            taskDiv.appendChild(document.createTextNode(' - '));
+            taskDiv.appendChild(taskCategorySpan)
+
+            taskList.appendChild(taskDiv);
+
+            taskTitle.value = '';
+        })
+
+
+    </script>
+</body>
+
+</html>
