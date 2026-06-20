@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            background-color: #f4f4f4;
+            padding: 2rem;
+        }
+
+        button,
+        a {
+            font-family: inherit;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .note {
+            background: #e3e3e3;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 5px solid #333;
+        }
+
+        .task-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .task-card p {
+            color: #666;
+        }
+
+        div[data-priority='high'] {
+            border: 2px solid #bb4040;
+            padding: 0.5rem 1rem;
+
+        }
+
+        div[data-status='completed'] {
+            border: 2px solid #459945;
+            padding: 1rem;
+        }
+
+        div[data-priority='no priority'] {
+            border: 2px solid green;
+
+        }
+
+        #taskList span,
+        .taskItem {
+            font-size: 1.5rem;
+        }
+
+
+
+        #taskList .taskItem {
+            display: flex;
+            align-items: center;
+        }
+
+        .editBtn {
+            margin-left: auto;
+        }
+
+        .completeBtn,
+        .deleteBtn {
+            margin-left: 1rem;
+        }
+
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #333333;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #333333;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .dark_light_toggle {
+            text-align: right;
+        }
+
+        body[data-theme='dark'] {
+            background-color: #000;
+        }
+
+        body[data-theme='dark'] h1 {
+            color: #fff;
+        }
+
+        body[data-theme='dark'] .taskItem {
+            color: #fff;
+        }
+
+        .format {
+            padding-inline: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="dark_light_toggle">
+            <label class="switch">
+                <input type="checkbox" id="toggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <h1>Task Manager</h1>
+
+        <form id="taskForm">
+
+            <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" id="taskTitle" placeholder="Enter task title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                </select>
+            </div>
+
+            <button type="button" id="addTask">Add Task</button>
+
+        </form>
+
+        <section id="taskList">
+            <!-- Task cards will appear here -->
+
+        </section>
+
+    </main>
+    <script>
+        const taskInput = document.getElementById('taskTitle');
+        const categorySelection = document.getElementById('category');
+        const addTaskBtn = document.getElementById('addTask');
+        const taskList = document.getElementById('taskList');
+        let editingTask = null;
+        let editCategory = null;
+
+        function createElement(element, textContent, classElement = 'default') {
+            const elementNode = document.createElement(element);
+            elementNode.textContent = textContent;
+            elementNode.classList.add(classElement);
+            return elementNode;
+        }
+
+        addTaskBtn.addEventListener('click', () => {
+            const taskTitle = taskInput.value.trim();
+            if (!taskTitle) {
+                return;
+            }
+
+
+            const createDivElement = createElement('div', '', 'taskItem');
+            const taskTitleSpan = createElement('span', taskTitle, 'taskItemTitle');
+            const formatSpan = createElement('span', ' - ', 'format');
+            const categorySpan = createElement('span', categorySelection.value, 'categoryItem');
+            const editBtn = createElement('button', 'Edit', 'editBtn');
+            const completeBtn = createElement('button', 'Complete', 'completeBtn');
+            const deleteBtn = createElement('button', 'Delete', 'deleteBtn');
+
+            createDivElement.append(taskTitleSpan);
+            createDivElement.append(formatSpan);
+            createDivElement.append(categorySpan);
+            createDivElement.append(editBtn);
+            createDivElement.append(completeBtn);
+            createDivElement.append(deleteBtn);
+
+
+
+            editBtn.addEventListener('click', () => {
+                console.log("edit button clicked");
+                editingTask = taskTitleSpan;
+                editCategory = categorySpan;
+                taskInput.value = taskTitleSpan.textContent;
+                categorySelection.value = categorySpan.textContent;
+                addTaskBtn.innerText = 'Update Task';
+
+            })
+
+            if (editingTask) {
+                editingTask.textContent = taskInput.value.trim();
+                editCategory.textContent = categorySelection.value;
+                editingTask = null;
+                editCategory = null;
+                addTaskBtn.innerText = 'Add Taskk';
+                taskInput.value = '';
+                taskInput.focus();
+                return;
+            }
+
+            completeBtn.addEventListener('click', () => {
+                createDivElement.style.opacity = 0.5;
+                createDivElement.style.textDecoration = 'line-through';
+                editBtn.disabled = true;
+                completeBtn.disabled = true;
+            })
+
+            deleteBtn.addEventListener('click', () => {
+                createDivElement.remove();
+            })
+
+            taskList.append(createDivElement)
+
+            taskInput.value = '';
+            taskInput.focus();
+        })
+
+
+        const toggle = document.getElementById('toggle');
+
+        toggle.addEventListener('change', function () {
+            const bodyElement = document.querySelector('body');
+            if (toggle.checked) {
+                bodyElement.dataset.theme = 'dark';
+            } else {
+                bodyElement.dataset.theme = 'light';
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
