@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task7</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            padding: 2rem;
+        }
+
+        .grandparent {
+            padding: 40px;
+            border: 3px solid #333;
+            background-color: #f8f8f8;
+        }
+
+        .parent {
+            padding: 40px;
+            border: 3px solid #0077ff;
+            background-color: #eaf3ff;
+            margin-top: 20px;
+        }
+
+        .child {
+            padding: 12px 24px;
+            cursor: pointer;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Event Propagation Demonstration</h2>
+
+    <p>
+        Open the browser console and click the Child Button.
+    </p>
+
+    <div class="grandparent">
+        Grandparent
+
+        <div class="parent">
+            Parent
+
+            <br><br>
+
+            <button class="child">
+                Child Button
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        const grandparent = document.querySelector('.grandparent');
+        const parent = document.querySelector('.parent');
+        const child = document.querySelector('.child');
+
+        console.log('========================');
+        console.log('EVENT BUBBLING');
+        console.log('========================');
+
+        // Bubbling
+        grandparent.addEventListener('click', () => {
+            console.log('Grandparent (Bubbling)');
+        });
+
+        parent.addEventListener('click', () => {
+            console.log('Parent (Bubbling)');
+        });
+
+        child.addEventListener('click', () => {
+            console.log('Child (Bubbling)');
+        });
+
+        console.log('========================');
+        console.log('EVENT CAPTURING');
+        console.log('========================');
+
+        // Capturing
+        grandparent.addEventListener('click', () => {
+            console.log('Grandparent (Capturing)');
+        }, true);
+
+        parent.addEventListener('click', () => {
+            console.log('Parent (Capturing)');
+        }, true);
+
+        child.addEventListener('click', () => {
+            console.log('Child (Capturing)');
+        }, true);
+
+        /*
+        Event Capturing:
+        Grandparent -> Parent -> Child
+
+        Event Bubbling:
+        Child -> Parent -> Grandparent
+
+        Default behavior:
+        JavaScript uses Event Bubbling.
+        To enable Capturing, pass true as the third argument
+        in addEventListener().
+        */
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task8</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Josefin Sans", sans-serif;
+            padding: 2rem;
+        }
+
+        .grandparent {
+            padding: 40px;
+            border: 3px solid #333;
+            background-color: #f8f8f8;
+        }
+
+        .parent {
+            padding: 40px;
+            border: 3px solid #0077ff;
+            background-color: #eaf3ff;
+            margin-top: 20px;
+        }
+
+        .child {
+            padding: 12px 24px;
+            cursor: pointer;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="pipeline">
+
+        <div class="html-flow">
+            <div class="box">HTML</div>
+            <div>↓</div>
+
+            <div class="box">Parsing</div>
+            <div>↓</div>
+
+            <div class="box">Tokenization</div>
+            <div>↓</div>
+
+            <div class="box">DOM Tree</div>
+        </div>
+
+        <div class="css-flow">
+            <div class="box">CSS</div>
+            <div>↓</div>
+
+            <div class="box">CSSOM Tree</div>
+        </div>
+
+    </section>
+
+    <div class="merge">
+        DOM Tree + CSSOM Tree
+        ↓
+        Render Tree
+    </div>
+
+</body>
+
+</html>
